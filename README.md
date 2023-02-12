@@ -8,6 +8,9 @@ consider this another branch of pipstory haha
 
 https://user-images.githubusercontent.com/82926705/218320274-defcb02b-c1e9-402c-977a-eaae3d01750c.mp4
 
+## my sketch for implementing formula to resolve velocity :x
+![image](https://user-images.githubusercontent.com/82926705/218320418-7bc1f5e9-7d55-453d-9399-8461d8359772.png)
+
 
 ## Getting Started
 
