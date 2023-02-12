@@ -1,6 +1,6 @@
 # pipbound
-
-another hobby game development
+https://piplupowo.github.io/pipbound/
+<br>another hobby game development
 consider this another branch of pipstory haha
 
 
