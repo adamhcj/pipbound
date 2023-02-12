@@ -23,10 +23,12 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
 
   int candyCounter = 0;
   final TextComponent candyCounterText = TextComponent();
+  late TextComponent angleControlText;
 
 
   final player = Player();
   final playerHitboxComponent = PlayerHitboxComponent();
+  final angleControl = AngleControl();
   final cameraObject = CameraObject();
   final leftButton = LeftButton();
   final rightButton = RightButton();
@@ -43,6 +45,8 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
   static late bool isLeft = false;
   static late bool isRight = false;
   static late bool isC = false;
+  static late bool isUp = false;
+  static late bool isDown = false;
 
   // for screen markers, setting the text format
   TextPaint textPaint = TextPaint(
@@ -147,9 +151,14 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
 
     add(candyCounterText);
 
+    angleControlText = addTextAt('angle: 0', 0, 100);
+    angleControlText.priority = 1;
+    angleControlText.positionType = PositionType.viewport;
+
     player.priority = 1;
     add(player);
     add(playerHitboxComponent);
+    add(angleControl);
 
     add(cameraObject);
     camera.followComponent(cameraObject);
@@ -262,6 +271,8 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     isLeft = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
     isRight = keysPressed.contains(LogicalKeyboardKey.arrowRight);
     isC = keysPressed.contains(LogicalKeyboardKey.keyC);
+    isUp = keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    isDown = keysPressed.contains(LogicalKeyboardKey.arrowDown);
 
     // if (isSpace) {
     //   player.jump();

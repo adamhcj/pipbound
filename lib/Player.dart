@@ -144,6 +144,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
     if (!facingLeft) {
       facingLeft = true;
       flipHorizontally();
+      gameRef.angleControl.angle = pi - gameRef.angleControl.angle;
+      // gameRef.angleControl.flipVertically();
     }
 
     if (onGround) {
@@ -182,6 +184,8 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
     if (facingLeft) {
       facingLeft = false;
       flipHorizontally();
+      gameRef.angleControl.angle = pi - gameRef.angleControl.angle;
+      // gameRef.angleControl.flipVertically();
     }
     if (onGround) {
       // if is changing direction
@@ -352,6 +356,46 @@ class CameraObject extends PositionComponent with HasGameRef<MyGame> {
   }
 }
 
+class AngleControl extends SpriteComponent with HasGameRef<MyGame> {
+  @override
+  Future<void> onLoad() async {
+    sprite = await Sprite.load('arrow.png');
+    size = Vector2(300, 100);
+    anchor = Anchor.centerLeft;
+    flipHorizontally();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    position = gameRef.player.position;
+    if (gameRef.player.facingLeft) {
+
+    }
+    if (MyGame.isUp) {
+      if (gameRef.player.facingLeft) {
+        angle += 1 * dt;
+      } else {
+        angle -= 1 * dt;
+      }
+    }
+    if (MyGame.isDown) {
+      if (gameRef.player.facingLeft) {
+        angle -= 1 * dt;
+      } else {
+        angle += 1 * dt;
+      }
+    }
+    if (gameRef.player.facingLeft) {
+      gameRef.angleControlText.text = "angle: ${angle/pi*180%360}";
+    } else {
+      gameRef.angleControlText.text = "angle: ${-(angle/pi*180%360 - 180)}";
+    }
+
+  }
+
+}
+
 class PlayerHitboxComponent extends PositionComponent with HasGameRef<MyGame>, CollisionCallbacks{
   @override
   void render(Canvas c) {
@@ -363,6 +407,7 @@ class PlayerHitboxComponent extends PositionComponent with HasGameRef<MyGame>, C
   Future<void> onLoad() async {
     size = gameRef.player.size * 0.8;
     anchor = gameRef.player.anchor;
+
     // add hitboxes
     ShapeHitbox hitbox = RectangleHitbox();
     // paints the hitbox so we can see
