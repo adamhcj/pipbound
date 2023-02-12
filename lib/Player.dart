@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pipstory/Platform.dart';
 
 import 'Bubble.dart';
@@ -22,6 +23,7 @@ enum PlayerState {
 
 class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<MyGame>, CollisionCallbacks {
   bool attacking = false;
+  bool charging = false;
   bool facingLeft = true;
   bool onGround = false;
   double friction = 300;
@@ -88,10 +90,17 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
     size = Vector2.all(128.0);
   }
 
+  void charge(dt) {
+    gameRef.power += 800 * dt;
+    gameRef.power = clampDouble(gameRef.power, 200, 2000);
+  }
+
   void attack() {
     if (attacking) {
       return;
     }
+    double savedPower = gameRef.power;
+    gameRef.power = 199;
     attacking = true;
     FlameAudio.play('pipattack.wav', volume: 0.25);
     // shoot bubble towards direction facing
@@ -102,14 +111,14 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
 
       for (int i = 0; i < noOfAttacks; i++) {
         Future.delayed(Duration(milliseconds: i*(55-noOfAttacks)), () {
-          gameRef.addBubble(Vector2(position.x-25, position.y-10), Vector2(-1000, -10 * noOfAttacks + i*30), i);
+          gameRef.addBubble(Vector2(position.x-25, position.y-10), Vector2(-savedPower*cos(gameRef.angleControl.angle), -savedPower*sin(gameRef.angleControl.angle)), i);
         });
       }
 
     } else {
       for (int i = 0; i < noOfAttacks; i++) {
         Future.delayed(Duration(milliseconds: i*(55-noOfAttacks)), () {
-          gameRef.addBubble(Vector2(position.x+25, position.y-10), Vector2(1000, -10 * noOfAttacks + i*30), i);
+          gameRef.addBubble(Vector2(position.x+25, position.y-10), Vector2(-savedPower*cos(gameRef.angleControl.angle), -savedPower*sin(gameRef.angleControl.angle)), i);
         });
       }
 
@@ -274,7 +283,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
     }
 
     if (MyGame.isC) {
-      attack();
+      charge(dt);
     }
 
     if (MyGame.isSpace) {
@@ -390,6 +399,12 @@ class AngleControl extends SpriteComponent with HasGameRef<MyGame> {
       gameRef.angleControlText.text = "angle: ${angle/pi*180%360}";
     } else {
       gameRef.angleControlText.text = "angle: ${-(angle/pi*180%360 - 180)}";
+    }
+
+    if (gameRef.player.facingLeft) {
+      angle = angle.clamp(pi / 10, pi / 2);
+    } else {
+      angle = angle.clamp(pi / 2, pi - pi / 10);
     }
 
   }

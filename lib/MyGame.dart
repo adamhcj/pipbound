@@ -21,9 +21,11 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
   @override
   Color backgroundColor() => const Color(0x59A3F4FF);
 
-  int candyCounter = 0;
+  int candyCounter = 5;
   final TextComponent candyCounterText = TextComponent();
   late TextComponent angleControlText;
+  late TextComponent powerControlText;
+  late double power = 1000;
 
 
   final player = Player();
@@ -155,6 +157,10 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     angleControlText.priority = 1;
     angleControlText.positionType = PositionType.viewport;
 
+    powerControlText = addTextAt('power: 0', 0, 200);
+    powerControlText.priority = 1;
+    powerControlText.positionType = PositionType.viewport;
+
     player.priority = 1;
     add(player);
     add(playerHitboxComponent);
@@ -205,7 +211,7 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     add(bubble);
 
     // destroy bubble after 6 seconds
-    Future.delayed(Duration(milliseconds: 600), () {
+    Future.delayed(Duration(milliseconds: 5000), () {
       if (bubble.current != BubbleState.splash) {
         remove(bubble);
         bubbles.remove(bubble);
@@ -221,6 +227,10 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     // calls all the tick methods in all the objects
     player.tick(dt);
     cameraObject.tick(dt);
+    powerControlText.text = "power: ${power}";
+    if (power >= 200 && !isC) {
+      player.attack();
+    }
     // leftButton.tick(dt);
     // rightButton.tick(dt);
     // spaceBar.tick(dt);

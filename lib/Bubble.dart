@@ -67,6 +67,10 @@ class Bubble extends SpriteAnimationGroupComponent<BubbleState> with HasGameRef<
   void tick(dt) {
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
+    if (current != BubbleState.splash) {
+      velocity += Vector2(0, dt*gameRef.gravity*200);
+    }
+
   }
 
   void removeItself(Monster enemy) {
