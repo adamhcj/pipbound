@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:pipstory/Platform.dart';
 
 import 'Monster.dart';
 import 'MyGame.dart';
@@ -157,5 +158,39 @@ class Bubble extends SpriteAnimationGroupComponent<BubbleState> with HasGameRef<
     });
   }
 
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+
+    if (other is Platform && current != BubbleState.splash) {
+      current = BubbleState.splash;
+      size = Vector2.all(300.0);
+      velocity = Vector2.zero();
+      Future.delayed(Duration(milliseconds: 600), () {
+        opacity = 0;
+      });
+
+      if (gameRef.candyCounter < 30) {
+        if (number % 5 == 0) {
+          FlameAudio.play('bubble.wav');
+        }
+      } else {
+        if (number % 10 == 0) {
+          FlameAudio.play('bubble.wav');
+        }
+        if (number % 2 == 0) {
+          gameRef.remove(this);
+          return;
+        }
+      }
+
+
+
+      // remove after animation is done
+      Future.delayed(Duration(milliseconds: 600), () {
+        gameRef.remove(this);
+      });
+
+    }
+  }
 
 }

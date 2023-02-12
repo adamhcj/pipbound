@@ -117,12 +117,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
 
     } else {
       for (int i = 0; i < noOfAttacks; i++) {
-        Future.delayed(Duration(milliseconds: i*(55-noOfAttacks)), () {
-          gameRef.addBubble(Vector2(position.x+25, position.y-10), Vector2(-savedPower*cos(gameRef.angleControl.angle), -savedPower*sin(gameRef.angleControl.angle)), i);
+        Future.delayed(Duration(milliseconds: i * (55 - noOfAttacks)), () {
+          gameRef.addBubble(Vector2(position.x + 25, position.y - 10), Vector2(
+              -savedPower * cos(gameRef.angleControl.angle),
+              -savedPower * sin(gameRef.angleControl.angle)), i);
         });
       }
-
     }
+
+
 
 
 
@@ -282,7 +285,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState> with HasGameRef<
 
     }
 
-    if (MyGame.isC) {
+    if (MyGame.isC && !attacking) {
       charge(dt);
     }
 
@@ -409,6 +412,22 @@ class AngleControl extends SpriteComponent with HasGameRef<MyGame> {
 
   }
 
+}
+
+class PowerBar extends SpriteComponent with HasGameRef<MyGame> {
+  @override
+  Future<void> onLoad() async {
+    sprite = await Sprite.load('redsquare.png');
+    position = Vector2(100, 20);
+    size = Vector2(300, 20);
+    anchor = Anchor.centerLeft;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    width = gameRef.power / 3;
+  }
 }
 
 class PlayerHitboxComponent extends PositionComponent with HasGameRef<MyGame>, CollisionCallbacks{

@@ -31,6 +31,7 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
   final player = Player();
   final playerHitboxComponent = PlayerHitboxComponent();
   final angleControl = AngleControl();
+  final powerBar = PowerBar();
   final cameraObject = CameraObject();
   final leftButton = LeftButton();
   final rightButton = RightButton();
@@ -156,6 +157,11 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     angleControlText = addTextAt('angle: 0', 0, 100);
     angleControlText.priority = 1;
     angleControlText.positionType = PositionType.viewport;
+
+
+    powerBar.priority = 1;
+    powerBar.positionType = PositionType.viewport;
+    add(powerBar);
 
     powerControlText = addTextAt('power: 0', 0, 200);
     powerControlText.priority = 1;
