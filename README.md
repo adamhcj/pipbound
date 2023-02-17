@@ -1,16 +1,7 @@
-# pipstory
+# pipbound
 
 piplup 2d adventure game
 
-## Getting Started
+# demo video, please turn on sounds
+https://user-images.githubusercontent.com/82926705/219550184-facad8af-dd22-4693-9fc9-c3b9f8f2cb78.mp4
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
