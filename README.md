@@ -1,16 +1,6 @@
-# pipbound
-https://piplupowo.github.io/pipbound/
-<br>another hobby game development
-consider this another branch of pipstory haha
+# pipstory
 
-
-## angle of attack can be controlled with up and down arrows, power of attack can be controlled by holding down attack button. <br> attack is done when C button is released.
-
-https://user-images.githubusercontent.com/82926705/218320274-defcb02b-c1e9-402c-977a-eaae3d01750c.mp4
-
-## my sketch for implementing formula to resolve velocity :x
-![image](https://user-images.githubusercontent.com/82926705/218320418-7bc1f5e9-7d55-453d-9399-8461d8359772.png)
-
+piplup 2d adventure game
 
 ## Getting Started
 

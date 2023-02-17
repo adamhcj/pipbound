@@ -32,9 +32,12 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
   final playerHitboxComponent = PlayerHitboxComponent();
   final angleControl = AngleControl();
   final powerBar = PowerBar();
+  final powerBarBackground = PowerBarBackground();
   final cameraObject = CameraObject();
   final leftButton = LeftButton();
   final rightButton = RightButton();
+  final upButton = UpButton();
+  final downButton = DownButton();
   final spaceBar = SpaceBar();
   final cButton = CButton();
   final background = Background();
@@ -103,9 +106,17 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     rightButton.positionType = PositionType.viewport;
     add(rightButton);
 
+    upButton.priority = 1;
+    upButton.positionType = PositionType.viewport;
+    add(upButton);
+
+    downButton.priority = 1;
+    downButton.positionType = PositionType.viewport;
+    add(downButton);
+
     spaceBar.priority = 1;
     spaceBar.positionType = PositionType.viewport;
-    add(spaceBar);
+    // add(spaceBar);
 
     cButton.priority = 1;
     cButton.positionType = PositionType.viewport;
@@ -124,6 +135,8 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     //   }
     // }
     addPlatform(0, 0, 900, 50);
+    addPlatform(-900, 0, 900, 50);
+    addPlatform(900, 0, 900, 50);
 
     // for (double i = 1; i <= 20; i++) {
     //   addPlatform(300*i, 250*-i, 80, 50);
@@ -152,7 +165,7 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     candyCounterText.priority = 1;
     candyCounterText.positionType = PositionType.viewport;
 
-    add(candyCounterText);
+    // add(candyCounterText);
 
     angleControlText = addTextAt('angle: 0', 0, 100);
     angleControlText.priority = 1;
@@ -163,7 +176,11 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     powerBar.positionType = PositionType.viewport;
     add(powerBar);
 
-    powerControlText = addTextAt('power: 0', 0, 200);
+    powerBarBackground.priority = 0;
+    powerBarBackground.positionType = PositionType.viewport;
+    add(powerBarBackground);
+
+    powerControlText = addTextAt('power: 0', 0, 50);
     powerControlText.priority = 1;
     powerControlText.positionType = PositionType.viewport;
 
@@ -191,7 +208,9 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     super.onGameResize(vector2);
     leftButton.onClientResize();
     rightButton.onClientResize();
-    spaceBar.onClientResize();
+    upButton.onClientResize();
+    downButton.onClientResize();
+    // spaceBar.onClientResize();
     cButton.onClientResize();
     background.onClientResize();
 
@@ -233,7 +252,7 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
     // calls all the tick methods in all the objects
     player.tick(dt);
     cameraObject.tick(dt);
-    powerControlText.text = "power: ${power}";
+    powerControlText.text = "power: ${power.round()}";
     if (power >= 200 && !isC) {
       player.attack();
     }
@@ -261,6 +280,16 @@ class MyGame extends FlameGame with KeyboardEvents, HasTappables , HasCollisionD
       rightButton.current = RightButtonState.pressed;
     } else {
       rightButton.current = RightButtonState.unpressed;
+    }
+    if (isUp) {
+      upButton.current = UpButtonState.pressed;
+    } else {
+      upButton.current = UpButtonState.unpressed;
+    }
+    if (isDown) {
+      downButton.current = DownButtonState.pressed;
+    } else {
+      downButton.current = DownButtonState.unpressed;
     }
     if (isSpace) {
       spaceBar.current = SpaceBarState.pressed;

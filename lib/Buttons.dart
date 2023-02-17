@@ -17,6 +17,16 @@ enum RightButtonState {
   pressed
 }
 
+enum UpButtonState {
+  unpressed,
+  pressed
+}
+
+enum DownButtonState {
+  unpressed,
+  pressed
+}
+
 enum SpaceBarState {
   unpressed,
   pressed
@@ -62,7 +72,7 @@ class LeftButton extends SpriteAnimationGroupComponent<LeftButtonState> with Has
 
   void onClientResize() {
     Vector2 newSize = gameRef.canvasSize;
-    position = newSize - Vector2(140, 50);
+    position = newSize - Vector2(220, 110);
   }
 
   @override
@@ -129,7 +139,7 @@ class RightButton extends SpriteAnimationGroupComponent<RightButtonState> with H
 
   void onClientResize() {
     Vector2 newSize = gameRef.canvasSize;
-    position = newSize - Vector2(50, 50);
+    position = newSize - Vector2(50, 110);
   }
 
   @override
@@ -158,6 +168,135 @@ class RightButton extends SpriteAnimationGroupComponent<RightButtonState> with H
   }
 
 }
+
+class UpButton extends SpriteAnimationGroupComponent<UpButtonState> with HasGameRef<MyGame>, Tappable {
+  UpButton() : super(
+      size: Vector2.all(88),
+      anchor: Anchor.center
+  );
+
+  Future<SpriteAnimation> loadSpriteAnimation(String name, int length) async {
+    // create list from 1 to length
+    final frames = List.generate(length, (i) => i + 1);
+    final sprites = frames.map((i) => Sprite.load('$name$i.png'));
+
+    double stepConst = 0.5;
+
+    final animation = SpriteAnimation.spriteList(
+      await Future.wait(sprites),
+      stepTime: stepConst / length,
+      loop: true,
+    );
+
+
+    return animation;
+  }
+
+  @override
+  Future<void> onLoad() async {
+    animations = {
+      UpButtonState.unpressed: await loadSpriteAnimation('up', 1),
+      UpButtonState.pressed: await loadSpriteAnimation('uppressed', 1),
+    };
+    current = UpButtonState.unpressed;
+    onClientResize();
+  }
+
+  void onClientResize() {
+    Vector2 newSize = gameRef.canvasSize;
+    position = newSize - Vector2(140, 180);
+  }
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    MyGame.isUp = true;
+    current = UpButtonState.pressed;
+    return true;
+  }
+
+  @override
+  bool onTapUp(TapUpInfo info) {
+    MyGame.isUp = false;
+    current = UpButtonState.unpressed;
+    return true;
+  }
+
+  @override
+  bool onTapCancel() {
+    MyGame.isUp = false;
+    current = UpButtonState.unpressed;
+    return true;
+  }
+
+  void tick(dt) {
+    // position = gameRef.cameraObject.position + gameRef.canvasSize/2*2.78 - Vector2(110, 120);
+  }
+
+}
+
+class DownButton extends SpriteAnimationGroupComponent<DownButtonState> with HasGameRef<MyGame>, Tappable {
+  DownButton() : super(
+      size: Vector2.all(88),
+      anchor: Anchor.center
+  );
+
+  Future<SpriteAnimation> loadSpriteAnimation(String name, int length) async {
+    // create list from 1 to length
+    final frames = List.generate(length, (i) => i + 1);
+    final sprites = frames.map((i) => Sprite.load('$name$i.png'));
+
+    double stepConst = 0.5;
+
+    final animation = SpriteAnimation.spriteList(
+      await Future.wait(sprites),
+      stepTime: stepConst / length,
+      loop: true,
+    );
+    return animation;
+  }
+
+  @override
+  Future<void> onLoad() async {
+    animations = {
+      DownButtonState.unpressed: await loadSpriteAnimation('down', 1),
+      DownButtonState.pressed: await loadSpriteAnimation('downpressed', 1),
+    };
+    current = DownButtonState.unpressed;
+    onClientResize();
+  }
+
+  void onClientResize() {
+    Vector2 newSize = gameRef.canvasSize;
+    position = newSize - Vector2(140, 50);
+  }
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    MyGame.isDown = true;
+    current = DownButtonState.pressed;
+    return true;
+  }
+
+  @override
+  bool onTapUp(TapUpInfo info) {
+    MyGame.isDown = false;
+    current = DownButtonState.unpressed;
+    return true;
+  }
+
+  @override
+  bool onTapCancel() {
+    MyGame.isDown = false;
+    current = DownButtonState.unpressed;
+    return true;
+  }
+
+  void tick(dt) {
+    // position = gameRef.cameraObject.position + gameRef.canvasSize/2*2.78 - Vector2(110, 120);
+  }
+
+}
+
 
 class SpaceBar extends SpriteAnimationGroupComponent<SpaceBarState> with HasGameRef<MyGame>, Tappable {
   SpaceBar() : super(
@@ -260,10 +399,7 @@ class CButton extends SpriteAnimationGroupComponent<CButtonState> with HasGameRe
   void onClientResize() {
     Vector2 newSize = gameRef.canvasSize;
     position = newSize - Vector2(680, 50);
-    if (position.x < 0) {
-      position.x = 30;
-      position.y -= 70;
-    }
+    position.x = 50;
   }
 
   @override

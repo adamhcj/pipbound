@@ -399,9 +399,9 @@ class AngleControl extends SpriteComponent with HasGameRef<MyGame> {
       }
     }
     if (gameRef.player.facingLeft) {
-      gameRef.angleControlText.text = "angle: ${angle/pi*180%360}";
+      gameRef.angleControlText.text = "angle: ${(angle/pi*180%360).round()}";
     } else {
-      gameRef.angleControlText.text = "angle: ${-(angle/pi*180%360 - 180)}";
+      gameRef.angleControlText.text = "angle: ${-((angle/pi*180%360 - 180).round())}";
     }
 
     if (gameRef.player.facingLeft) {
@@ -418,15 +418,25 @@ class PowerBar extends SpriteComponent with HasGameRef<MyGame> {
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load('redsquare.png');
-    position = Vector2(100, 20);
-    size = Vector2(300, 20);
+    position = Vector2(20, 20);
+    size = Vector2(300, 50);
     anchor = Anchor.centerLeft;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    width = gameRef.power / 3;
+    width = (gameRef.power - 199) / 3;
+  }
+}
+
+class PowerBarBackground extends SpriteComponent with HasGameRef<MyGame> {
+  @override
+  Future<void> onLoad() async {
+    sprite = await Sprite.load('powerbar.png');
+    position = Vector2(20, 20);
+    size = Vector2((2000 - 199) / 3, 50);
+    anchor = Anchor.centerLeft;
   }
 }
 
