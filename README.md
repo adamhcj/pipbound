@@ -1,5 +1,7 @@
 # pipbound
 
+<a href="https://adamhcj.github.io/pipbound/">https://adamhcj.github.io/pipbound/</a>
+
 piplup 2d aiming game
 
 <img src="https://github.com/piplupOwo/piplupOwo.github.io/blob/main/resources/bg4.gif?raw=true" />
